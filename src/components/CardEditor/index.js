@@ -75,7 +75,7 @@ export default function CardEditor() {
             <Button
               onClick={() => handleButtonAction('create')}
               horizontalPadding={32}
-              disabled={!description || !tags.length}
+              disabled={!description.trim() || !tags.length}
               colors={{
                 background: '#279EFF',
                 font: '#FFF',
@@ -90,7 +90,7 @@ export default function CardEditor() {
             <Button
               onClick={() => handleButtonAction('update')}
               horizontalPadding={32}
-              disabled={!description || !tags.length}
+              disabled={!description.trim() || !tags.length}
               colors={{
                 background: '#039be5',
                 font: '#FFF',
