@@ -1,12 +1,17 @@
-import { createContext, useReducer } from 'react';
+import { createContext, useReducer, useEffect } from 'react';
 import BoardReducer from './BoardReducer';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 import { columnsMock } from '../mock';
 
 export const BoardContext = createContext();
 
 export default function BoardProvider({ children }) {
-  const [columns, dispatch] = useReducer(BoardReducer, columnsMock);
+  const [localStorageColumns, setLocalStorageColumns] = useLocalStorage(
+    'columns',
+    columnsMock
+  );
+  const [columns, dispatch] = useReducer(BoardReducer, localStorageColumns);
 
   const handleDragEnd = (result) => {
     const { source, destination } = result;
@@ -69,6 +74,10 @@ export default function BoardProvider({ children }) {
       payload: { columnId, cardId, taskId },
     });
   };
+
+  useEffect(() => {
+    setLocalStorageColumns(columns);
+  }, [columns, setLocalStorageColumns]);
 
   return (
     <BoardContext.Provider
