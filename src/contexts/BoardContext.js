@@ -34,7 +34,6 @@ export default function BoardProvider({ children }) {
   };
 
   const createCardOnColumn = (columnId, cardData) => {
-    console.log(columnId, cardData);
     dispatch({ type: 'CREATE_CARD', payload: { columnId, cardData } });
   };
 

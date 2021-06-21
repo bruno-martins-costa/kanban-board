@@ -13,7 +13,6 @@ export default function EditorProvider({ children }) {
   const [editor, dispatch] = useReducer(EditorReducer, editorInitialState);
 
   const handleOpenEditor = useCallback((cardData) => {
-    console.log('cardData: ', cardData)
     dispatch({ type: 'OPEN_EDITOR', payload: cardData });
   }, []);
 

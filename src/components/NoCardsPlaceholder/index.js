@@ -3,7 +3,7 @@ import { Container, Text } from './styles';
 export default function NoCardPlaceholder() {
   return (
     <Container>
-      <Text>Nenhum card nesta coluna. Arraste até aqui ou crie um novo.</Text>
+      <Text>No cards in this column. Drag here or create a new one.</Text>
     </Container>
   );
 }
