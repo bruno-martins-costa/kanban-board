@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 export const Container = styled.div`
   display: flex;
   justify-content: space-between;
+  position: relative;
 `;
 
 export const Description = styled.p`
@@ -14,8 +15,9 @@ export const Description = styled.p`
 `;
 
 export const Options = styled.div`
-  position: relative;
+  position: absolute;
   transition: visibility 100ms ease-in-out;
+  right: 0;
 `;
 
 export const OptionsButton = styled.div`
