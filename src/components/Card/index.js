@@ -22,8 +22,8 @@ export default function Card({ index, columnId, cardData, handleOpenModal }) {
 
   const cardRef = useRef(null);
 
-  const setCurrentEditingTask = (editingCardData) => {
-    setEditingCardData(editingCardData);
+  const setCurrentEditingTask = (editingCardValues) => {
+    setEditingCardData(editingCardValues);
   };
 
   const handleAddTask = () => {
@@ -51,8 +51,7 @@ export default function Card({ index, columnId, cardData, handleOpenModal }) {
   useEffect(() => {
     if (editingCardData) {
       const timer = setTimeout(() => {
-        const { columnId, cardId, taskId, inputValue } = editingCardData;
-        editCardTask(columnId, cardId, taskId, inputValue);
+        editCardTask({ ...editingCardData });
         setEditingCardData(null);
       }, 1500);
       return () => clearTimeout(timer);
@@ -67,7 +66,7 @@ export default function Card({ index, columnId, cardData, handleOpenModal }) {
   }, [handleClickOutside]);
 
   return (
-    <Draggable draggableId={cardId} index={index}>
+    <Draggable draggableId={cardId} key={cardId} index={index}>
       {(provided, snapshot) => (
         <Container
           ref={provided.innerRef}
@@ -116,6 +115,7 @@ export default function Card({ index, columnId, cardData, handleOpenModal }) {
               totalTasks={tasks.length}
             />
           </CardContainer>
+          {provided.placeholder}
         </Container>
       )}
     </Draggable>

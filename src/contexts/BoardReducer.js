@@ -15,8 +15,8 @@ export default function BoardReducer(state, action) {
     source,
     destination,
   } = { ...payload.cardData, ...payload };
-  const { droppableId: destinationDroppableId } = { ...destination };
   const { droppableId: sourceDroppableId } = { ...source };
+  const { droppableId: destinationDroppableId } = { ...destination };
 
   const setCardToAnotherColumn = () => {
     const destinationItems = state[destinationDroppableId].items;
@@ -175,6 +175,22 @@ export default function BoardReducer(state, action) {
     };
   };
 
+  const setMoveCardTask = () => {
+    const [card] = state[columnId].items.filter(
+      (item) => item.cardId === cardId
+    );
+    const cardTasks = card.tasks;
+    const [movedTask] = cardTasks.splice(source.index, 1);
+    cardTasks.splice(destination.index, 0, movedTask);
+
+    return {
+      ...state,
+      [columnId]: {
+        ...state[columnId],
+      },
+    };
+  };
+
   const setStateReducerTypes = {
     MOVE_CARD_TO_ANOTHER_COLUMN: setCardToAnotherColumn,
     MOVE_CARD_TO_SAME_COLUMN: setCardToSameColumn,
@@ -185,6 +201,7 @@ export default function BoardReducer(state, action) {
     ADD_TASK_TO_CARD: setAddTaskToCard,
     EDIT_CARD_TASK: setEditCardTask,
     DELETE_CARD_TASK: setDeleteCardTask,
+    MOVE_CARD_TASK: setMoveCardTask,
   };
 
   return setStateReducerTypes[type]() || state;

@@ -14,28 +14,51 @@ export default function BoardProvider({ children }) {
   const [columns, dispatch] = useReducer(BoardReducer, localStorageColumns);
 
   const handleDragEnd = (result) => {
-    const { source, destination } = result;
+    const { type, source, destination } = result;
     if (!destination) return;
+    const sourceId = source.droppableId;
+    const destinationId = destination.droppableId;
 
-    const sourceColumnId = source.droppableId;
-    const destinationColumnId = destination.droppableId;
+    const moveCard = () => {
+      const [movedItem] = columns[sourceId].items.splice(source.index, 1);
+      const isMovedToSameColumn = sourceId === destinationId;
 
-    const [movedItem] = columns[sourceColumnId].items.splice(source.index, 1);
-    const isMovedToSameColumn = sourceColumnId === destinationColumnId;
+      if (isMovedToSameColumn) {
+        return dispatch({
+          type: 'MOVE_CARD_TO_SAME_COLUMN',
+          payload: { source, destination, movedItem },
+        });
+      }
 
-    if (isMovedToSameColumn) {
+      if (!isMovedToSameColumn) {
+        return dispatch({
+          type: 'MOVE_CARD_TO_ANOTHER_COLUMN',
+          payload: { source, destination, movedItem },
+        });
+      }
+    };
+
+    const moveTask = () => {
+      const columnsArray = ['backlog', 'todo', 'doing', 'done'];
+      const [columnId] = columnsArray.filter((column) =>
+        sourceId.includes(column)
+      );
+      const cardId = sourceId.replace(`${columnId}-`, '');
       return dispatch({
-        type: 'MOVE_CARD_TO_SAME_COLUMN',
-        payload: { source, destination, movedItem },
+        type: 'MOVE_CARD_TASK',
+        payload: { columnId, source, destination, cardId },
       });
-    }
+    };
 
-    if (!isMovedToSameColumn) {
-      return dispatch({
-        type: 'MOVE_CARD_TO_ANOTHER_COLUMN',
-        payload: { source, destination, movedItem },
-      });
-    }
+    const dragActionTypes = (action) => {
+      const actions = {
+        cards: moveCard,
+        tasks: moveTask,
+      };
+      return actions[action]();
+    };
+
+    dragActionTypes(type);
   };
 
   const createCardOnColumn = (columnId, cardData) => {
@@ -61,14 +84,14 @@ export default function BoardProvider({ children }) {
     dispatch({ type: 'ADD_TASK_TO_CARD', payload: { columnId, cardId } });
   };
 
-  const editCardTask = (columnId, cardId, taskId, taskText) => {
+  const editCardTask = ({ columnId, cardId, taskId, taskText }) => {
     dispatch({
       type: 'EDIT_CARD_TASK',
       payload: { columnId, cardId, taskId, taskText },
     });
   };
 
-  const deleteCardTask = (columnId, cardId, taskId) => {
+  const deleteCardTask = ({ columnId, cardId, taskId }) => {
     dispatch({
       type: 'DELETE_CARD_TASK',
       payload: { columnId, cardId, taskId },

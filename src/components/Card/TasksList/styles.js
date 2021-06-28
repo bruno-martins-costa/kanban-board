@@ -13,6 +13,8 @@ export const Task = styled.div`
   font-size: 14px;
   position: relative;
   overflow: visible;
+  background-color: #fff;
+  border-radius: 4px;
 `;
 
 export const CheckBox = styled.div`
@@ -37,6 +39,7 @@ export const CheckBox = styled.div`
 
 export const TextareaContainer = styled.div`
   width: 100%;
+  padding-right: 14px;
 
   &:hover {
     & > .removeTask {
@@ -47,8 +50,8 @@ export const TextareaContainer = styled.div`
 
 export const RemoveTask = styled.div`
   position: absolute;
-  top: 6px;
-  right: 5px;
+  top: 10px;
+  right: 24px;
   width: 14px;
   height: 14px;
   display: flex;
@@ -66,6 +69,16 @@ export const RemoveTask = styled.div`
   &:hover {
     filter: brightness(0.8);
   }
+`;
+
+export const DragArea = styled.div`
+  width: fit-content;
+  margin: 0;
+  padding: 4px 0;
+  position: absolute;
+  top: 6px;
+  right: -2px;
+  display: flex;
 `;
 
 export const NoneTasks = styled.div`

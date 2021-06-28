@@ -3,7 +3,7 @@ import { ListContainer } from './styles';
 
 export default function CardsList({ id, children }) {
   return (
-    <Droppable droppableId={id}>
+    <Droppable droppableId={id} type='cards'>
       {(provided, snapshot) => (
         <ListContainer
           ref={provided.innerRef}
